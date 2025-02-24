@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cambio de Dólar a Sol</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <div class="container">
+        <h1>Tipo de Cambio Dólar a Sol</h1>
+        <table>
+            <tr>
+                <th>Cambio</th>
+            </tr>
+            <tr>
+                <td id="exchangeRate">Cargando...</td>
+            </tr>
+        </table>
+        <p id="lastUpdate"></p>
+    </div>
+
+    <script>
+        async function fetchExchangeRate() {
+            try {
+                const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+                const data = await response.json();
+                const rate = data.rates.PEN;
+                document.getElementById('exchangeRate').innerText = `${rate.toFixed(2)}`;
+                document.getElementById('lastUpdate').innerText = `Última actualización: ${new Date().toLocaleTimeString()}`;
+            } catch (error) {
+                document.getElementById('exchangeRate').innerText = 'Error';
+            }
+        }
+
+        fetchExchangeRate();
+        setInterval(fetchExchangeRate, 3600000); // Actualiza cada hora
+    </script>
+</body>
+</html>
